@@ -195,26 +195,30 @@ function App() {
                 </section>
                 <section className="w-full mb-16">
                     <h2 className="text-4xl font-bold text-[#FF204E] mb-6 text-center">Portfolio</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div className="flex flex-col space-y-8 ">
                         {projects.map((project, index) => (
                             <div key={index}
                                  className="bg-white text-black p-6 rounded-lg shadow-lg">
-                                <div className="flex flex-col space-y-4">
+                                <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
                                     <ImageCarousel images={project.images}/>
-                                    <div className="flex flex-col space-y-2">
-                                        <h3 className="text-2xl font-semibold">{project.title}</h3>
-                                        <p>{project.description}</p>
-                                        <div className="flex flex-wrap gap-2 mt-2">
-                                            {project.techStack.map((tech, idx) => (
-                                                <span key={idx}
-                                                      className="px-2 py-1 bg-[#FF204E] text-white text-sm font-semibold rounded">{tech}</span>
-                                            ))}
+                                    <div className="flex flex-col space-y-2 md:w-1/2 justify-between">
+                                        <div className="flex flex-col">
+                                            <h3 className="text-3xl font-bold bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] bg-clip-text text-transparent mb-2">{project.title}</h3>
+                                            <p>{project.description}</p>
                                         </div>
-                                        {project.github && (
-                                            <a href={project.github} target="_blank" rel="noopener noreferrer"
-                                               className="text-[#FF204E] font-semibold underline mt-4">View on
-                                                GitHub</a>
-                                        )}
+                                        <div className="flex flex-col">
+                                            {project.github && (
+                                                <a href={project.github} target="_blank" rel="noopener noreferrer"
+                                                   className="text-[#FF204E] font-semibold underline mt-4">View on
+                                                    GitHub</a>
+                                            )}
+                                            <div className="flex flex-wrap gap-2 mt-2">
+                                                {project.techStack.map((tech, idx) => (
+                                                    <span key={idx}
+                                                          className="px-2 py-1 bg-[#FF204E] text-white text-sm font-semibold rounded">{tech}</span>
+                                                ))}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -244,7 +248,7 @@ function App() {
             </main>
 
             <footer className="w-full py-10 flex justify-center bg-[#FF204E] shadow-lg">
-                <p>© 2024 LaunchCode. All rights reserved.</p>
+                <p>2024 LaunchCode.</p>
             </footer>
         </div>
     );
@@ -277,27 +281,45 @@ const ImageCarousel = ({images}: { images: string[] }) => {
     }, [images]);
 
     return (
-        <div className="relative h-96 w-full overflow-hidden rounded-lg">
-            {images.map((image, index) => (
-                <img
-                    key={index}
-                    src={image}
-                    alt={`Project screenshot ${index + 1}`}
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-                        index === currentImage ? "opacity-100" : "opacity-0"
-                    }`}
-                />
-            ))}
-            <div className="absolute bottom-2 left-2 flex space-x-2">
-                {images.map((_, index) => (
-                    <span
+        <div className="w-full rounded-lg">
+            <div className="relative h-96">
+                {images.map((image, index) => (
+                    <div key={index} className="w-full flex justify-center absolute">
+                        <img
+                            src={image}
+                            alt={`Project screenshot ${index + 1}`}
+                            className={`rounded-lg h-96 flex overflow-clip object-contain inset-0 transition-opacity duration-1000 ${
+                                index === currentImage ? "opacity-100" : "opacity-0"
+                            }`}
+                        />
+                    </div>
+                ))}
+                <div className="absolute bottom-2 left-2 flex space-x-2">
+                    {images.map((_, index) => (
+                        <span
+                            key={index}
+                            className={`h-2 w-2 rounded-full transition duration-300 ${
+                                index === currentImage
+                                    ? "bg-white"
+                                    : "bg-gray-400"
+                            }`}
+                        ></span>
+                    ))}
+                </div>
+            </div>
+            <div className="flex flex-row content-evenly h-32 overflow-x-scroll">
+                {images.map((image, index) => (
+                    <img
+                        onClick={() => setCurrentImage(index)}
                         key={index}
-                        className={`h-2 w-2 rounded-full transition duration-300 ${
+                        src={image}
+                        alt={`Project screenshot ${index + 1}`}
+                        className={`cursor-pointer object-contain h-32 transition duration-300 rounded-lg border-2 ${
                             index === currentImage
-                                ? "bg-white"
-                                : "bg-gray-400"
+                                ? "border-gray-600"
+                                : "border-white"
                         }`}
-                    ></span>
+                    />
                 ))}
             </div>
         </div>
