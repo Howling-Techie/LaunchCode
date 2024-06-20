@@ -10,8 +10,96 @@ import {
     FaGithub,
     FaLinkedin
 } from "react-icons/fa";
+import {ServiceItem} from "./ServiceItem.tsx";
+import {useEffect, useState} from "react";
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
+import {
+    arrayMove, rectSortingStrategy,
+    SortableContext,
+    sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
 
 function App() {
+    const [services, setServices] = useState([
+        {
+            id: 1,
+            icon: FaLaptopCode,
+            title: "Web Development",
+            description: "Creating responsive and interactive websites."
+        },
+        {
+            id: 2,
+            icon: FaMobileAlt,
+            title: "Mobile Development",
+            description: "Building mobile applications for various devices."
+        },
+        {
+            id: 3,
+            icon: FaServer,
+            title: "Backend Integration",
+            description: "Implementing robust backend systems."
+        },
+        {
+            id: 4,
+            icon: FaCloud,
+            title: "Hosting Services",
+            description: "Offering hosting and domain name services."
+        },
+        {
+            id: 5,
+            icon: FaDatabase,
+            title: "Database Management",
+            description: "Providing regular updates and database management."
+        },
+        {
+            id: 6,
+            icon: FaSyncAlt,
+            title: "Maintenance",
+            description: "Ensuring your site remains up-to-date and secure."
+        },
+    ]);
+    const projects: {
+        title: string,
+        description: string,
+        techStack: string[],
+        images: string[],
+        github?: string
+    }[] = [
+        {
+            title: "Eventful",
+            description: "An events management platform where users could create and manage groups and events, including making them either public or private, and free of charge or require a payment. In addition, users could add the events to their own Google Calendar, and manage invites, access requests, and more.",
+            techStack: ["React", "Express", "Stripe", "Google API", "Tailwild", "Postgres"],
+            images: ["assets/eventful/01.png", "assets/eventful/02.png", "assets/eventful/03.png", "assets/eventful/04.png"],
+            github: "https://github.com/Howling-Techie/events-platform-fe"
+        },
+        {
+            title: "Materialize",
+            description: "Materialize is a site dedicated to helping Discord Servers organise movie nights. Users can log in via Discord, register their server, and create movie nights. Other members of the server can then log in, submit movies that they'd like to watch on the night, and then finally cast their votes in a ranked ordering system to select what film they'd like to see.",
+            techStack: ["React", "Express", "Discord Auth", "TMDB API", "Tailwild", "Postgres"],
+            images: ["assets/materialize/01.png", "assets/materialize/02.png", "assets/materialize/03.png"]
+        },
+        {
+            title: "InventorEEE",
+            description: "InventorEEE was a management platform for a company that specialises in handling e-waste. They needed a service that would allow them to manage clients and their e-waste collection requests, assigning dates and drivers to the created collections. Once the orders have arrived at the facility, their progress could be tracked by applying the generated barcodes to each item which could be used to quickly look up the item and update its status, including the options to rename items, add notes, and upload data destruction certificates.",
+            techStack: ["React", "Express", "Tailwild", "Postgres"],
+            images: ["assets/inventoreee/01.png", "assets/inventoreee/02.png", "assets/inventoreee/03.png"]
+        },
+    ];
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
+
     return (
         <div
             className="min-h-screen bg-gradient-to-r from-[#00224D] to-[#000825] text-white flex flex-col items-center font-sans">
@@ -26,7 +114,7 @@ function App() {
             </header>
 
             <main className="w-full max-w-6xl flex flex-col items-center px-6 py-10">
-                <section className="w-full mb-16 text-center relative">
+                <section className="w-full mb-16 text-center">
                     <h2 className="text-4xl font-bold text-[#FF204E] mb-6">About Me</h2>
                     <div
                         className="relative mx-auto max-w-4xl bg-white bg-opacity-10 p-8 rounded-lg shadow-lg">
@@ -66,94 +154,73 @@ function App() {
                         </p>
                     </div>
                 </section>
-                <section className="w-full mb-16 relative">
+                <section className="w-full mb-16">
                     <h2 className="text-4xl font-bold text-[#FF204E] mb-6 text-center">Services</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {[
-                            {
-                                icon: FaLaptopCode,
-                                title: "Web Development",
-                                description: "Creating responsive and interactive websites."
-                            },
-                            {
-                                icon: FaMobileAlt,
-                                title: "Mobile Development",
-                                description: "Building mobile applications for various devices."
-                            },
-                            {
-                                icon: FaServer,
-                                title: "Backend Integration",
-                                description: "Implementing robust backend systems."
-                            },
-                            {
-                                icon: FaCloud,
-                                title: "Hosting Services",
-                                description: "Offering hosting and domain name services."
-                            },
-                            {
-                                icon: FaDatabase,
-                                title: "Database Management",
-                                description: "Providing regular updates and database management."
-                            },
-                            {
-                                icon: FaSyncAlt,
-                                title: "Maintenance",
-                                description: "Ensuring your site remains up-to-date and secure."
-                            },
-                        ].map((service, index) => (
-                            <div key={index}
-                                 className="group service-item bg-white text-black p-6 rounded-lg shadow-lg hover:shadow-2xl duration-750 transition transform hover:scale-105 flex flex-col items-center relative overflow-hidden"
-                                 role="button" aria-label={service.title}>
-                                <div
-                                    className="absolute inset-0 bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out overflow-hidden z-10">
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <SortableContext
+                            items={services}
+                            strategy={rectSortingStrategy}
+                        >
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                {services.map(item => <ServiceItem key={item.id} id={item.id}>
                                     <div
-                                        className="absolute z-10 flex flex-col items-center text-white duration-500 ease-in-out translate-x-full group-hover:translate-x-0 py-6 px-6 w-full">
-                                        <service.icon className="text-6xl mb-4 transition"/>
-                                        <h3 className="text-center text-2xl font-semibold mb-2 transition">{service.title}</h3>
-                                        <p className="text-center transition">{service.description}</p>
+                                        className="min-h-full group service-item bg-white text-black p-6 rounded-lg shadow-lg hover:shadow-2xl duration-750 transition transform hover:scale-105 flex flex-col items-center overflow-hidden"
+                                        aria-label={item.title}>
+                                        <div
+                                            className="absolute inset-0 bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out overflow-hidden z-10">
+                                            <div
+                                                className="absolute z-10 flex flex-col items-center text-white duration-500 ease-in-out translate-x-full group-hover:translate-x-0 py-6 px-6 w-full">
+                                                <item.icon className="text-6xl mb-4 transition"/>
+                                                <h3 className="text-center text-2xl font-semibold mb-2 transition">{item.title}</h3>
+                                                <p className="text-center transition">{item.description}</p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="flex flex-col items-center text-black w-full">
+                                            <item.icon className="text-[#FF204E] text-6xl mb-4"
+                                                       aria-hidden="true"/>
+                                            <h3 className="text-center text-2xl font-semibold mb-2 bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] bg-clip-text text-transparent">{item.title}</h3>
+                                            <p className="text-center">{item.description}</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div
-                                    className="relative flex flex-col items-center text-black w-full">
-                                    <service.icon className="text-[#FF204E] text-6xl mb-4" aria-hidden="true"/>
-                                    <h3 className="text-center text-2xl font-semibold mb-2 bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] bg-clip-text text-transparent">{service.title}</h3>
-                                    <p className="text-center">{service.description}</p>
+                                </ServiceItem>)}
+                            </div>
+                        </SortableContext>
+                    </DndContext>
+                </section>
+                <section className="w-full mb-16">
+                    <h2 className="text-4xl font-bold text-[#FF204E] mb-6 text-center">Portfolio</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        {projects.map((project, index) => (
+                            <div key={index}
+                                 className="bg-white text-black p-6 rounded-lg shadow-lg">
+                                <div className="flex flex-col space-y-4">
+                                    <ImageCarousel images={project.images}/>
+                                    <div className="flex flex-col space-y-2">
+                                        <h3 className="text-2xl font-semibold">{project.title}</h3>
+                                        <p>{project.description}</p>
+                                        <div className="flex flex-wrap gap-2 mt-2">
+                                            {project.techStack.map((tech, idx) => (
+                                                <span key={idx}
+                                                      className="px-2 py-1 bg-[#FF204E] text-white text-sm font-semibold rounded">{tech}</span>
+                                            ))}
+                                        </div>
+                                        {project.github && (
+                                            <a href={project.github} target="_blank" rel="noopener noreferrer"
+                                               className="text-[#FF204E] font-semibold underline mt-4">View on
+                                                GitHub</a>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </section>
-                <section className="w-full mb-16 relative">
-                    <h2 className="text-4xl font-bold text-[#FF204E] mb-6 text-center">Portfolio</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        {/* Portfolio Item 1 */}
-                        <div
-                            className="bg-white text-black p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition duration-500">
-                            <img src="path/to/image1.jpg" alt="Project 1"
-                                 className="w-full h-64 object-cover mb-4 rounded-lg"/>
-                            <h3 className="text-2xl font-semibold mb-2">Project Title 1</h3>
-                            <p className="flex-grow mb-4">Short description of the project goes here. This project
-                                showcases advanced web development skills and a keen eye for design.</p>
-                            <a href="https://github.com/yourgithub/project1"
-                               className="text-[#FF204E] font-semibold underline">View on GitHub</a>
-                        </div>
-
-                        {/* Portfolio Item 2 */}
-                        <div
-                            className="bg-white text-black p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition duration-500">
-                            <img src="path/to/image2.jpg" alt="Project 2"
-                                 className="w-full h-64 object-cover mb-4 rounded-lg"/>
-                            <h3 className="text-2xl font-semibold mb-2">Project Title 2</h3>
-                            <p className="flex-grow mb-4">Short description of the project goes here. This project
-                                highlights mobile app development capabilities and backend integration.</p>
-                            <a href="https://github.com/yourgithub/project2"
-                               className="text-[#FF204E] font-semibold underline">View on GitHub</a>
-                        </div>
-
-                        {/* Add more portfolio items as needed */}
-                    </div>
-                </section>
-                <section className="w-full mb-16 relative">
+                <section className="w-full mb-16">
                     <h2 className="text-4xl font-bold text-[#FF204E] mb-6 text-center">Contact</h2>
                     <div
                         className="flex flex-wrap justify-center gap-8 p-8 bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] rounded-lg shadow-2xl">
@@ -180,6 +247,59 @@ function App() {
             </footer>
         </div>
     );
-};
 
+    function handleDragEnd(event) {
+        const {active, over} = event;
+
+        if (active.id !== over.id) {
+            setServices((items) => {
+                const oldIndex = items.findIndex(i => i.id === active.id);
+                const newIndex = items.findIndex(i => i.id === over.id);
+
+                return arrayMove(items, oldIndex, newIndex);
+            });
+        }
+    }
+}
+
+const ImageCarousel = ({images}: { images: string[] }) => {
+    const [currentImage, setCurrentImage] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentImage((prevImage) =>
+                prevImage === images.length - 1 ? 0 : prevImage + 1
+            );
+        }, 5000); // Change image every 5 seconds
+
+        return () => clearInterval(interval);
+    }, [images]);
+
+    return (
+        <div className="relative h-96 w-full overflow-hidden rounded-lg">
+            {images.map((image, index) => (
+                <img
+                    key={index}
+                    src={image}
+                    alt={`Project screenshot ${index + 1}`}
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                        index === currentImage ? "opacity-100" : "opacity-0"
+                    }`}
+                />
+            ))}
+            <div className="absolute bottom-2 left-2 flex space-x-2">
+                {images.map((_, index) => (
+                    <span
+                        key={index}
+                        className={`h-2 w-2 rounded-full transition duration-300 ${
+                            index === currentImage
+                                ? "bg-white"
+                                : "bg-gray-400"
+                        }`}
+                    ></span>
+                ))}
+            </div>
+        </div>
+    );
+};
 export default App;
