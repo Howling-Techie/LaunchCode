@@ -1,7 +1,11 @@
 import {useSortable} from "@dnd-kit/sortable";
 import {CSS} from "@dnd-kit/utilities";
+import {ReactElement, JSXElementConstructor, ReactNode, ReactPortal} from "react";
 
-export function ServiceItem(props) {
+export function ServiceItem(props: {
+    id: number;
+    children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined;
+}) {
     const {
         attributes,
         listeners,

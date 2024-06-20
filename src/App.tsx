@@ -19,6 +19,7 @@ import {
     PointerSensor,
     useSensor,
     useSensors,
+    DragEndEvent
 } from "@dnd-kit/core";
 import {
     arrayMove, rectSortingStrategy,
@@ -248,17 +249,17 @@ function App() {
         </div>
     );
 
-    function handleDragEnd(event) {
+    function handleDragEnd(event: DragEndEvent) {
         const {active, over} = event;
+        if (over)
+            if (active.id !== over.id) {
+                setServices((items) => {
+                    const oldIndex = items.findIndex(i => i.id === active.id);
+                    const newIndex = items.findIndex(i => i.id === over.id);
 
-        if (active.id !== over.id) {
-            setServices((items) => {
-                const oldIndex = items.findIndex(i => i.id === active.id);
-                const newIndex = items.findIndex(i => i.id === over.id);
-
-                return arrayMove(items, oldIndex, newIndex);
-            });
-        }
+                    return arrayMove(items, oldIndex, newIndex);
+                });
+            }
     }
 }
 
