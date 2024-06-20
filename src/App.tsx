@@ -18,10 +18,10 @@ function App() {
             <header className="w-full py-4 flex justify-center items-center bg-[#FF204E] shadow-lg">
                 <div className="flex flex-col md:flex-row justify-center">
                     <img className="object-contain max-h-24 md:max-h-32"
-                         src="/assets/LAUNCH.png"
+                         src="./assets/LAUNCH.png"
                          alt="Launch"/><img
                     className="object-contain max-h-24 md:max-h-32"
-                    src="/assets/CODE.png" alt="Code"/>
+                    src="./assets/CODE.png" alt="Code"/>
                 </div>
             </header>
 
