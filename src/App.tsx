@@ -76,20 +76,20 @@ function App() {
         {
             title: "Eventful",
             description: "An events management platform where users could create and manage groups and events, including making them either public or private, and free of charge or require a payment. In addition, users could add the events to their own Google Calendar, and manage invites, access requests, and more.",
-            techStack: ["React", "Express", "Stripe", "Google API", "Tailwild", "Postgres"],
+            techStack: ["React", "Express", "Stripe", "Google API", "Tailwild", "PostgreSQL"],
             images: ["assets/eventful/01.png", "assets/eventful/02.png", "assets/eventful/03.png", "assets/eventful/04.png"],
             github: "https://github.com/Howling-Techie/events-platform-fe"
         },
         {
             title: "Materialize",
             description: "Materialize is a site dedicated to helping Discord Servers organise movie nights. Users can log in via Discord, register their server, and create movie nights. Other members of the server can then log in, submit movies that they'd like to watch on the night, and then finally cast their votes in a ranked ordering system to select what film they'd like to see.",
-            techStack: ["React", "Express", "Discord Auth", "TMDB API", "Tailwild", "Postgres"],
+            techStack: ["React", "Express", "Discord Auth", "TMDB API", "Tailwild", "PostgreSQL"],
             images: ["assets/materialize/01.png", "assets/materialize/02.png", "assets/materialize/03.png"]
         },
         {
             title: "InventorEEE",
             description: "InventorEEE was a management platform for a company that specialises in handling e-waste. They needed a service that would allow them to manage clients and their e-waste collection requests, assigning dates and drivers to the created collections. Once the orders have arrived at the facility, their progress could be tracked by applying the generated barcodes to each item which could be used to quickly look up the item and update its status, including the options to rename items, add notes, and upload data destruction certificates.",
-            techStack: ["React", "Express", "Tailwild", "Postgres"],
+            techStack: ["React", "Express", "Tailwild", "PostgreSQL"],
             images: ["assets/inventoreee/01.png", "assets/inventoreee/02.png", "assets/inventoreee/03.png"]
         },
     ];
@@ -123,7 +123,7 @@ function App() {
                             className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] opacity-10 rounded-lg pointer-events-none"></div>
                         <p className="text-lg leading-relaxed">
                             Welcome to LaunchCode! I am a passionate full stack web developer dedicated to bringing your
-                            digital dreams to life. My expertise spans a wide range of technologies, allowing me to
+                            digital projects to life. My expertise spans a wide range of technologies, allowing me to
                             create stunning websites and applications that perform seamlessly on both desktop and mobile
                             devices.
                         </p>
@@ -142,7 +142,8 @@ function App() {
                                 advanced web projects with backend integration.
                             </li>
                             <li className="transition duration-500 transform hover:translate-x-2 group-hover:opacity-50 hover:!opacity-100">Offering
-                                hosting services for the completed sites, including domain name acquisition.
+                                hosting services for the completed sites, including domain name acquisition and security
+                                certification.
                             </li>
                             <li className="transition duration-500 transform hover:translate-x-2 group-hover:opacity-50 hover:!opacity-100">Providing
                                 regular updates and database management as needed.
@@ -212,10 +213,10 @@ function App() {
                                                    className="text-[#FF204E] font-semibold underline mt-4">View on
                                                     GitHub</a>
                                             )}
-                                            <div className="flex flex-wrap gap-2 mt-2">
+                                            <div className="flex flex-wrap gap-2 mt-2 items-center">
                                                 {project.techStack.map((tech, idx) => (
-                                                    <span key={idx}
-                                                          className="px-2 py-1 bg-[#FF204E] text-white text-sm font-semibold rounded">{tech}</span>
+                                                    <div key={idx}
+                                                         className="flex flex-grow justify-center px-2 py-1 bg-[#FF204E] text-white text-sm font-semibold rounded">{tech}</div>
                                                 ))}
                                             </div>
                                         </div>
@@ -230,10 +231,10 @@ function App() {
                     <div
                         className="flex flex-wrap justify-center gap-8 p-8 bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] rounded-lg shadow-2xl">
                         {[
-                            {icon: FaTwitter, title: "Twitter", url: "https://twitter.com/yourusername"},
-                            {icon: FaEnvelope, title: "Email", url: "mailto:yourname@example.com"},
-                            {icon: FaGithub, title: "GitHub", url: "https://github.com/yourgithub"},
-                            {icon: FaLinkedin, title: "LinkedIn", url: "https://linkedin.com/in/yourlinkedin"},
+                            {icon: FaTwitter, title: "Twitter", url: "https://twitter.com/"},
+                            {icon: FaEnvelope, title: "Email", url: "mailto:contact@domain.com"},
+                            {icon: FaGithub, title: "GitHub", url: "https://github.com/howling-techie"},
+                            {icon: FaLinkedin, title: "LinkedIn", url: "https://linkedin.com/"},
                         ].map((contact, index) => (
                             <a key={index} href={contact.url} target="_blank" rel="noopener noreferrer"
                                className="group contact-item bg-white text-black p-6 rounded-lg shadow-lg hover:shadow-inner transform transition duration-500 flex flex-col items-center w-48 h-auto hover:bg-[#00224D] hover:text-white"
