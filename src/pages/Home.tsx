@@ -102,7 +102,7 @@ export default function Home() {
             // Press delay of 250ms, with tolerance of 5px of movement
             activationConstraint: {
                 delay: 400,
-                tolerance: 100,
+                tolerance: 200,
             },
         }),
         useSensor(KeyboardSensor, {
@@ -198,7 +198,7 @@ export default function Home() {
                                 <div className="grid grid-cols-3 gap-8">
                                     {services.map(item => <ServiceItem key={item.id} id={item.id}>
                                         <div
-                                            className="min-h-full group service-item bg-white text-black p-6 rounded-lg shadow-lg hover:shadow-2xl duration-750 transition transform hover:scale-105 flex flex-col items-center overflow-hidden"
+                                            className="min-h-full group service-item bg-white text-black p-6 rounded-lg shadow-lg delay-300 active:shadow-2xl duration-750 transition transform active:scale-105 flex flex-col items-center overflow-hidden"
                                             aria-label={item.title}>
                                             <div
                                                 className="absolute inset-0 bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] transform -translate-x-full group-active:translate-x-0 transition-transform duration-500 ease-in-out overflow-hidden z-10">
