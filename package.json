@@ -12,7 +12,7 @@
     "generate": "vite build --outDir dist/static && npm run build:server && node prerender",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "cross-env NODE_ENV=production node server",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build && npm run generate",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
