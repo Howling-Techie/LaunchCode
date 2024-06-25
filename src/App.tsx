@@ -95,7 +95,13 @@ function App() {
     ];
 
     const sensors = useSensors(
-        useSensor(PointerSensor),
+        useSensor(PointerSensor, {
+            // Press delay of 250ms, with tolerance of 5px of movement
+            activationConstraint: {
+                delay: 400,
+                tolerance: 100,
+            },
+        }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
@@ -158,10 +164,14 @@ function App() {
                 </section>
                 <section className="w-full mb-16">
                     <h2 className="text-4xl font-bold text-[#FF204E] mb-6 text-center">Services</h2>
+                    <h3 className="text-white rotate-6 translate-x-1/2 -translate-y-16 md:-translate-y-8">Click and
+                        Drag
+                        Us!</h3>
                     <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}
                         onDragEnd={handleDragEnd}
+
                     >
                         <SortableContext
                             items={services}
@@ -173,9 +183,9 @@ function App() {
                                         className="min-h-full group service-item bg-white text-black p-6 rounded-lg shadow-lg hover:shadow-2xl duration-750 transition transform hover:scale-105 flex flex-col items-center overflow-hidden"
                                         aria-label={item.title}>
                                         <div
-                                            className="absolute inset-0 bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out overflow-hidden z-10">
+                                            className="absolute inset-0 bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] transform -translate-x-full group-active:translate-x-0 transition-transform duration-500 ease-in-out overflow-hidden z-10">
                                             <div
-                                                className="absolute z-10 flex flex-col items-center text-white duration-500 ease-in-out translate-x-full group-hover:translate-x-0 py-6 px-6 w-full">
+                                                className="absolute z-10 flex flex-col items-center text-white duration-500 ease-in-out translate-x-full group-active:translate-x-0 py-6 px-6 w-full">
                                                 <item.icon className="text-6xl mb-4 transition"/>
                                                 <h3 className="text-center text-2xl font-semibold mb-2 transition">{item.title}</h3>
                                                 <p className="text-center transition">{item.description}</p>
