@@ -79,20 +79,20 @@ export default function Home() {
         {
             title: "Eventful",
             description: "An events management platform where users could create and manage groups and events, including making them either public or private, and free of charge or require a payment. In addition, users could add the events to their own Google Calendar, and manage invites, access requests, and more.",
-            techStack: ["React", "Express", "Stripe", "Google API", "Tailwild", "PostgreSQL"],
+            techStack: ["React", "Express", "Stripe", "Google API", "Tailwind CSS", "PostgreSQL"],
             images: ["assets/eventful/01.png", "assets/eventful/02.png", "assets/eventful/03.png", "assets/eventful/04.png"],
             github: "https://github.com/Howling-Techie/events-platform-fe"
         },
         {
             title: "Materialize",
             description: "Materialize is a site dedicated to helping Discord Servers organise movie nights. Users can log in via Discord, register their server, and create movie nights. Other members of the server can then log in, submit movies that they'd like to watch on the night, and then finally cast their votes in a ranked ordering system to select what film they'd like to see.",
-            techStack: ["React", "Express", "Discord Auth", "TMDB API", "Tailwild", "PostgreSQL"],
+            techStack: ["React", "Express", "Discord Auth", "TMDB API", "Tailwind CSS", "PostgreSQL"],
             images: ["assets/materialize/01.png", "assets/materialize/02.png", "assets/materialize/03.png"]
         },
         {
             title: "InventorEEE",
             description: "InventorEEE was a management platform for a company that specialises in handling e-waste. They needed a service that would allow them to manage clients and their e-waste collection requests, assigning dates and drivers to the created collections. Once the orders have arrived at the facility, their progress could be tracked by applying the generated barcodes to each item which could be used to quickly look up the item and update its status, including the options to rename items, add notes, and upload data destruction certificates.",
-            techStack: ["React", "Express", "Tailwild", "PostgreSQL"],
+            techStack: ["React", "Express", "Tailwind CSS", "PostgreSQL"],
             images: ["assets/inventoreee/01.png", "assets/inventoreee/02.png", "assets/inventoreee/03.png"]
         },
     ];
