@@ -26,6 +26,7 @@ import {
     SortableContext,
     sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
+import {VscRocket} from "react-icons/vsc";
 
 function App() {
     const [services, setServices] = useState([
@@ -66,6 +67,8 @@ function App() {
             description: "Ensuring your site remains up-to-date and secure."
         },
     ]);
+    const [showImage, setShowImage] = useState(false);
+    const [selectedImage, setSelectedImage] = useState("");
     const projects: {
         title: string,
         description: string,
@@ -107,9 +110,19 @@ function App() {
         })
     );
 
+    const HideImage = () => {
+        setShowImage(false);
+    };
+
+    const ShowImage = (image: string) => {
+        setSelectedImage(image);
+        setShowImage(true);
+    };
+
     return (
         <div
             className="min-h-screen bg-gradient-to-r from-[#00224D] to-[#000825] text-white flex flex-col items-center font-sans">
+            {showImage && <HighlightedImage image={selectedImage} onHide={HideImage}/>}
             <header className="w-full py-4 flex justify-center items-center bg-[#FF204E] shadow-lg">
                 <div className="flex flex-col md:flex-row justify-center">
                     <img className="object-contain max-h-24 md:max-h-32"
@@ -122,19 +135,19 @@ function App() {
 
             <main className="w-full max-w-6xl flex flex-col items-center px-6 py-10">
                 <section className="w-full mb-16 text-center">
-                    <h2 className="text-4xl font-bold text-[#FF204E] mb-6">About Me</h2>
+                    <h2 className="flex justify-center text-[140px] font-bold text-[#FF204E] mb-6"><VscRocket
+                        className=""/></h2>
                     <div
-                        className="relative mx-auto max-w-4xl bg-white bg-opacity-10 p-8 rounded-lg shadow-lg">
-                        <div
-                            className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] opacity-10 rounded-lg pointer-events-none"></div>
-                        <p className="text-lg leading-relaxed">
-                            Welcome to LaunchCode! I am a passionate full stack web developer dedicated to bringing your
-                            digital projects to life. My expertise spans a wide range of technologies, allowing me to
-                            create stunning websites and applications that perform seamlessly on both desktop and mobile
-                            devices.
+                        className="bg-gray-700 bg-opacity-50 drop-shadow-2xl border border-[#FFFFFF80] backdrop-blur mx-auto max-w-4xl p-8 rounded-lg shadow-lg">
+                        <p className="text-lg">
+                            Welcome to LaunchCode! I am a passionate full stack web developer dedicated to
+                            bringing your digital projects to life. My expertise spans a wide range of
+                            technologies, allowing me to create stunning websites and applications that perform
+                            seamlessly on both desktop and mobile devices.
                         </p>
                         <p className="mt-4 text-lg leading-relaxed">
-                            Whether you need a simple static website or a complex project with robust backend systems,
+                            Whether you need a simple static website or a complex project with robust backend
+                            systems,
                             I've got you covered. My services include:
                         </p>
                         <ul className="mt-4 list-disc list-inside text-left space-y-2 group">
@@ -148,7 +161,8 @@ function App() {
                                 advanced web projects with backend integration.
                             </li>
                             <li className="transition duration-500 transform hover:translate-x-2 group-hover:opacity-50 hover:!opacity-100">Offering
-                                hosting services for the completed sites, including domain name acquisition and security
+                                hosting services for the completed sites, including domain name acquisition and
+                                security
                                 certification.
                             </li>
                             <li className="transition duration-500 transform hover:translate-x-2 group-hover:opacity-50 hover:!opacity-100">Providing
@@ -156,22 +170,23 @@ function App() {
                             </li>
                         </ul>
                         <p className="mt-4 text-lg leading-relaxed">
-                            I pride myself on delivering high-quality, visually appealing, and user-friendly digital
-                            solutions that cater to your unique business needs. Browse through my portfolio below to see
+                            I pride myself on delivering high-quality, visually appealing, and user-friendly
+                            digital
+                            solutions that cater to your unique business needs. Browse through my portfolio
+                            below to
+                            see
                             examples of my work.
                         </p>
                     </div>
                 </section>
                 <section className="w-full mb-16">
                     <h2 className="text-4xl font-bold text-[#FF204E] mb-6 text-center">Services</h2>
-                    <h3 className="text-white rotate-6 translate-x-1/2 -translate-y-16 md:-translate-y-8">Click and
-                        Drag
-                        Us!</h3>
+                    <h3 className="text-white rotate-6 translate-x-1/2 -translate-y-16 md:-translate-y-8">
+                        Click and Drag Us!</h3>
                     <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}
                         onDragEnd={handleDragEnd}
-
                     >
                         <SortableContext
                             items={services}
@@ -211,7 +226,7 @@ function App() {
                             <div key={index}
                                  className="bg-white text-black p-6 rounded-lg shadow-lg">
                                 <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
-                                    <ImageCarousel images={project.images}/>
+                                    <ImageCarousel images={project.images} showImage={ShowImage}/>
                                     <div className="flex flex-col space-y-2 md:w-1/2 justify-between">
                                         <div className="flex flex-col">
                                             <h3 className="text-3xl font-bold bg-gradient-to-r from-[#FF204E] to-[#FF5A5E] bg-clip-text text-transparent mb-2">{project.title}</h3>
@@ -278,7 +293,7 @@ function App() {
     }
 }
 
-const ImageCarousel = ({images}: { images: string[] }) => {
+const ImageCarousel = ({images, showImage}: { images: string[], showImage: (image: string) => void }) => {
     const [currentImage, setCurrentImage] = useState(0);
 
     useEffect(() => {
@@ -293,7 +308,7 @@ const ImageCarousel = ({images}: { images: string[] }) => {
 
     return (
         <div className="w-full rounded-lg">
-            <div className="relative h-96">
+            <div className="relative h-96 cursor-pointer" onClick={() => showImage(images[currentImage])}>
                 {images.map((image, index) => (
                     <div key={index} className="w-full flex justify-center absolute">
                         <img
@@ -336,4 +351,20 @@ const ImageCarousel = ({images}: { images: string[] }) => {
         </div>
     );
 };
+
+const HighlightedImage = ({image, onHide}: {
+    image: string, onHide:
+        () => void;
+}) => {
+    return (
+        <div
+            className="fixed w-svw h-svh flex justify-center items-center z-30 cursor-pointer"
+            onClick={() => onHide()}>
+            <div className="bg-black w-full h-full opacity-70 absolute z-40"/>
+            <div className="p-4 md:p-24 z-50">
+                <img src={image} alt="Image preview" className="object-contain"/>
+            </div>
+        </div>);
+};
+
 export default App;
