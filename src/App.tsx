@@ -19,14 +19,14 @@ const MetaTags = () => (
         <meta property="og:type" content="website"/>
         <meta property="og:title" content="LaunchCode"/>
         <meta property="og:description" content="Freelance web design to help launch your business to new heights"/>
-        <meta property="og:image" content="./assets/social.png"/>
+        <meta property="og:image" content="https://howling-techie.github.io/LaunchCode/assets/social.png"/>
         <meta name="twitter:card" content="summary_large_image"/>
         <meta property="twitter:domain" content="howling-techie.github.io"/>
         <meta property="twitter:url" content="https://howling-techie.github.io/LaunchCode"/>
         <meta name="twitter:title" content="LaunchCode"/>
         <meta name="twitter:description"
               content="LaunchCode - Freelance web development to help launch your business to new heights"/>
-        <meta name="twitter:image" content="./assets/social.png"/>
+        <meta name="twitter:image" content="https://howling-techie.github.io/LaunchCode/assets/social.png"/>
     </>
 );
 
